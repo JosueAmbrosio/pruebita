@@ -22,6 +22,23 @@
                     }.bind(this));
                 },
             });
+            // Handler for second video
+            AFRAME.registerComponent('videohandler2', {
+                init: function () {
+                    var marker = this.el;
+                    this.vid2 = document.querySelector("#vid2");
+
+                    marker.addEventListener('markerFound', function () {
+                        this.toggle = true;
+                        this.vid2.play();
+                    }.bind(this));
+
+                    marker.addEventListener('markerLost', function () {
+                        this.toggle = false;
+                        this.vid2.pause();
+                    }.bind(this));
+                },
+            });
         </script>
     </head>
 
@@ -35,9 +52,10 @@
             gesture-detector
         >
             <a-assets>
+                <!-- First video -->
                 <video
                     id="vid"
-                    src="assets/assets/ar/assets/asset.mp4"
+                    src="assets/video1.mp4"
                     preload="auto"
                     response-type="arraybuffer"
                     loop
@@ -47,12 +65,30 @@
                     muted
                     playsinline
                 ></video>
+                <!-- Second video -->
+                <video
+                    id="vid2"
+                    src="assets/video2.mp4"
+                    preload="auto"
+                    response-type="arraybuffer"
+                    loop
+                    crossorigin
+                    webkit-playsinline
+                    autoplay
+                    muted
+                    playsinline
+                ></video>
+                <!-- First image -->
+                <img id="image1" src="assets/photo1.jpg" />
+                <!-- Second image -->
+                <img id="image2" src="assets/photo2.jpg" />
             </a-assets>
 
+            <!-- First marker and video -->
             <a-marker
                 type="pattern"
                 preset="custom"
-                url="assets/assets/ar/assets/marker.patt"
+                url="assets/marker1.patt"
                 videohandler
                 smooth="true"
                 smoothCount="10"
@@ -73,6 +109,78 @@
                 ></a-video>
             </a-marker>
 
+            <!-- Second marker and video -->
+            <a-marker
+                type="pattern"
+                preset="custom"
+                url="assets/marker2.patt"
+                videohandler2
+                smooth="true"
+                smoothCount="10"
+                smoothTolerance="0.01"
+                smoothThreshold="5"
+                raycaster="objects: .clickable"
+                emitevents="true"
+                cursor="fuse: false; rayOrigin: mouse;"
+                id="markerB"
+            >
+                <a-video
+                    src="#vid2"
+                    scale="1 1 1"
+                    position="0 0.1 0"
+                    rotation="-90 0 0"
+                    class="clickable"
+                    gesture-handler
+                ></a-video>
+            </a-marker>
+
+            <!-- First image marker -->
+            <a-marker
+                type="pattern"
+                preset="custom"
+                url="assets/marker3.patt"
+                smooth="true"
+                smoothCount="10"
+                smoothTolerance="0.01"
+                smoothThreshold="5"
+                raycaster="objects: .clickable"
+                emitevents="true"
+                cursor="fuse: false; rayOrigin: mouse;"
+                id="markerC"
+            >
+                <a-image
+                    src="#image1"
+                    scale="1 1 1"
+                    position="0 0.1 0"
+                    rotation="0 0 0"
+                    class="clickable"
+                ></a-image>
+            </a-marker>
+
+            <!-- Second image marker -->
+            <a-marker
+                type="pattern"
+                preset="custom"
+                url="assets/marker4.patt"
+                smooth="true"
+                smoothCount="10"
+                smoothTolerance="0.01"
+                smoothThreshold="5"
+                raycaster="objects: .clickable"
+                emitevents="true"
+                cursor="fuse: false; rayOrigin: mouse;"
+                id="markerD"
+            >
+                <a-image
+                    src="#image2"
+                    scale="1 1 1"
+                    position="0 0.1 0"
+                    rotation="0 0 0"
+                    class="clickable"
+                ></a-image>
+            </a-marker>
+
+            <!-- Camera -->
             <a-entity camera></a-entity>
         </a-scene>
     </body>
